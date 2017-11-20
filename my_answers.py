@@ -47,7 +47,7 @@ class NeuralNetwork(object):
         delta_weights_h_o = np.zeros(self.weights_hidden_to_output.shape)
         #print('weight_h_o.shape',self.weights_hidden_to_output.shape)
         for X, y in zip(features, targets):
-            X = np.expand_dims(X,axis=0)
+            
             #print('X.shape',X.shape)
             delta_weights_i_h__i = np.zeros(self.weights_input_to_hidden.shape)
             delta_weights_h_o__i = np.zeros(self.weights_hidden_to_output.shape)
@@ -73,7 +73,7 @@ class NeuralNetwork(object):
         '''
         #### Implement the forward pass here ####
         ### Forward pass ###
-        # TODO: Hidden layer - Replace these values with your calculations.
+        X = np.expand_dims(X,axis=0)
         hidden_inputs = np.dot(X,self.weights_input_to_hidden) # signals into hidden layer
         #print('hidden_inputs',hidden_inputs)
         hidden_outputs = self.activation_function(hidden_inputs)# signals from hidden layer
@@ -81,7 +81,7 @@ class NeuralNetwork(object):
         # TODO: Output layer - Replace these values with your calculations.
         final_inputs = hidden_outputs # signals into final output layer
         final_outputs = np.dot(final_inputs,self.weights_hidden_to_output) # signals from final output layer
-        
+        print (final_outputs)
         return final_outputs, hidden_outputs
 
     def backpropagation(self, final_outputs, hidden_outputs, X, y, delta_weights_i_h, delta_weights_h_o):
@@ -98,7 +98,7 @@ class NeuralNetwork(object):
         #### Implement the backward pass here ####
         ### Backward pass ###
 
-        # TODO: Output error - Replace this value with your calculations.
+        X = np.expand_dims(X,axis=0)
         error = 0.5*(y-final_outputs)**2 # Output layer error is the difference between desired target and actual output.
         #print('error',error)
         # TODO: Calculate the hidden layer's contribution to the error
@@ -114,9 +114,9 @@ class NeuralNetwork(object):
         #print('hidden_error_term',hidden_error_term)
         
         # Weight step (input to hidden)
-        delta_out_weights_i_h = -np.dot(X.transpose(),hidden_error_term)
+        delta_out_weights_i_h = np.dot(X.transpose(),hidden_error_term)
         # Weight step (hidden to output)
-        delta_out_weights_h_o = -output_error_term.transpose()
+        delta_out_weights_h_o = output_error_term.transpose()
         return delta_out_weights_i_h, delta_out_weights_h_o
 
     def update_weights(self, delta_weights_i_h, delta_weights_h_o, n_records):
@@ -129,9 +129,9 @@ class NeuralNetwork(object):
             n_records: number of records
 
         '''
-        self.weights_hidden_to_output += self.lr*delta_weights_h_o# update hidden-to-output weights with gradient descent step
+        self.weights_hidden_to_output += -self.lr*delta_weights_h_o# update hidden-to-output weights with gradient descent step
         #print('answer weights_hidden_to_output',self.weights_hidden_to_output)
-        self.weights_input_to_hidden += self.lr*delta_weights_i_h # update input-to-hidden weights with gradient descent step
+        self.weights_input_to_hidden += -self.lr*delta_weights_i_h # update input-to-hidden weights with gradient descent step
 
     def run(self, features):
         ''' Run a forward pass through the network with input features 
@@ -146,12 +146,12 @@ class NeuralNetwork(object):
         hidden_outputs = self.activation_function(hidden_inputs)
         final_inputs = hidden_outputs 
         final_outputs = np.dot(final_inputs,self.weights_hidden_to_output)
-        #print('run.final_outputs',final_outputs)
+        print('run.final_outputs',final_outputs)
         return final_outputs
 #########################################################
 # Set your hyperparameters here
 ##########################################################
-iterations = 100
-learning_rate = 0.1
-hidden_nodes = 56
+iterations = 250
+learning_rate = 0.28
+hidden_nodes = 28
 output_nodes = 1
