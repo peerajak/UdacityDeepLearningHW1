@@ -42,7 +42,7 @@ class NeuralNetwork(object):
         
         '''
         n_records = features.shape[0]
-        print('Found ',n_records,' number of samples')
+        #print('Found ',n_records,' number of samples')
         delta_weights_i_h = np.zeros(self.weights_input_to_hidden.shape)
         delta_weights_h_o = np.zeros(self.weights_hidden_to_output.shape)
         #print('weight_h_o.shape',self.weights_hidden_to_output.shape)
@@ -140,18 +140,18 @@ class NeuralNetwork(object):
             ---------
             features: 1D array of feature values
         '''
-        n_records = features.shape[0]
-        final_outputs = 0
-        for X in features:
-            X = np.expand_dims(X,axis=0)   
-            final_outputs_i, hidden_outputs_i = self.forward_pass_train(X)  # Implement the forward pass function below
-            final_outputs += final_outputs_i/n_records
-        
+
+        X = features#np.expand_dims(features,axis=0)
+        hidden_inputs = np.dot(X,self.weights_input_to_hidden) 
+        hidden_outputs = self.activation_function(hidden_inputs)
+        final_inputs = hidden_outputs 
+        final_outputs = np.dot(final_inputs,self.weights_hidden_to_output)
+        #print('run.final_outputs',final_outputs)
         return final_outputs
 #########################################################
 # Set your hyperparameters here
 ##########################################################
 iterations = 100
 learning_rate = 0.1
-hidden_nodes = 2
+hidden_nodes = 56
 output_nodes = 1
