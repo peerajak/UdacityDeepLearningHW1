@@ -81,7 +81,7 @@ class NeuralNetwork(object):
         # TODO: Output layer - Replace these values with your calculations.
         final_inputs = hidden_outputs # signals into final output layer
         final_outputs = np.dot(final_inputs,self.weights_hidden_to_output) # signals from final output layer
-        print (final_outputs)
+        #print (final_outputs)
         return final_outputs, hidden_outputs
 
     def backpropagation(self, final_outputs, hidden_outputs, X, y, delta_weights_i_h, delta_weights_h_o):
@@ -146,12 +146,12 @@ class NeuralNetwork(object):
         hidden_outputs = self.activation_function(hidden_inputs)
         final_inputs = hidden_outputs 
         final_outputs = np.dot(final_inputs,self.weights_hidden_to_output)
-        print('run.final_outputs',final_outputs)
+        #print('run.final_outputs',final_outputs)
         return final_outputs
 #########################################################
 # Set your hyperparameters here
 ##########################################################
-iterations = 250
-learning_rate = 0.28
-hidden_nodes = 28
+iterations = 5000
+learning_rate = 0.5
+hidden_nodes = 30
 output_nodes = 1
